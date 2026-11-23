@@ -10,7 +10,7 @@ let vendorBuild = URL(fileURLWithPath: #filePath)
 
 let package = Package(
     name: "Sotto",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v14)],
     targets: [
         .target(name: "CWhisper"),
         .executableTarget(
