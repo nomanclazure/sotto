@@ -1,7 +1,13 @@
 #!/bin/bash
 # Builds Sotto.app from source and installs it into /Applications.
 # Run:  bash "scripts/build_app.sh"
+# Add --no-install to only build build/Sotto.app without installing it.
 set -euo pipefail
+
+INSTALL=1
+if [ "${1:-}" = "--no-install" ]; then
+  INSTALL=0
+fi
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP="$ROOT/build/Sotto.app"
@@ -26,6 +32,11 @@ fi
 
 echo "==> Signing (local ad-hoc signature)..."
 codesign --force --sign - "$APP"
+
+if [ "$INSTALL" = "0" ]; then
+  echo "==> Built: $APP (not installed)"
+  exit 0
+fi
 
 echo "==> Installing to /Applications..."
 if rm -rf /Applications/Sotto.app 2>/dev/null && cp -R "$APP" /Applications/ 2>/dev/null; then
